@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/GeorgeSalu/API-REST-Nodejs/issues"
   },
-  "homepage": "https://github.com/GeorgeSalu/API-REST-Nodejs#readme"
+  "homepage": "https://github.com/GeorgeSalu/API-REST-Nodejs#readme",
+  "devDependencies": {
+    "eslint": "^5.13.0"
+  }
 }
