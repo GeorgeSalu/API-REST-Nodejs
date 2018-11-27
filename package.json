@@ -1,23 +1,24 @@
 {
-  "name": "API-REST-Nodejs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GeorgeSalu/API-REST-Nodejs.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GeorgeSalu/API-REST-Nodejs/issues"
-  },
-  "homepage": "https://github.com/GeorgeSalu/API-REST-Nodejs#readme",
-  "devDependencies": {
-    "eslint": "^5.13.0"
-  }
+    "name": "API-REST-Nodejs",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GeorgeSalu/API-REST-Nodejs.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/GeorgeSalu/API-REST-Nodejs/issues"
+    },
+    "homepage": "https://github.com/GeorgeSalu/API-REST-Nodejs#readme",
+    "devDependencies": {
+        "eslint": "^5.13.0",
+        "jest": "23.6.0"
+    }
 }
