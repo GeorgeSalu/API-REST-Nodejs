@@ -19,6 +19,7 @@
     "homepage": "https://github.com/GeorgeSalu/API-REST-Nodejs#readme",
     "devDependencies": {
         "eslint": "^5.13.0",
-        "jest": "23.6.0"
+        "jest": "23.6.0",
+        "supertest": "3.3.0"
     }
 }
