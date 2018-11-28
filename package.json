@@ -4,7 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest"
+        "test": "jest",
+        "secure-mode": "jest --watch",
+        "start": "node src/server.js"
     },
     "repository": {
         "type": "git",
