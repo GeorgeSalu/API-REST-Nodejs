@@ -4,6 +4,8 @@ module.exports = (app) => {
     };
 
     const save = (user) => {
+        if (!user.name) return { error: 'Nome é um atributo obrigatorio' }
+
         return app.db('users').insert(user, '*')
     };
 
