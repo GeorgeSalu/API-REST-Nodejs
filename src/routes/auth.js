@@ -2,7 +2,7 @@ const jwt = require('jwt-simple');
 const bcrypt = require('bcrypt-nodejs');
 const secret = 'Segredo';
 
-module.exports = () => {
+module.exports = (app) => {
     const signin = (req, res, next) => {
         app.services.user.findOne({ mail: req.body.mail })
             .then((user) => {
