@@ -5,6 +5,8 @@ const mail = `${Date.now()}@mail.com`
 
 let user;
 
+const MAIN_ROUTE = '/v1/users';
+
 beforeAll(async () => {
     const res = await app.services.user.save({ name: 'User Account', mail: `${Date.now()}@gmail.com`, passwd: '123456' })
     user = { ...res[0] };
@@ -12,7 +14,7 @@ beforeAll(async () => {
 })
 
 test('Deve listar todos os usuarios', () => {
-    return request(app).get('/users')
+    return request(app).get(MAIN_ROUTE)
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
             expect(res.status).toBe(200);
@@ -21,7 +23,7 @@ test('Deve listar todos os usuarios', () => {
 })
 
 test('Deve inserir usuario com sucesso', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({ name: 'Walter Mitty', mail, passwd: '123456' })
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
@@ -32,7 +34,7 @@ test('Deve inserir usuario com sucesso', () => {
 })
 
 test('deve armazenar uma senha criptografada', async () => {
-    const res = await request(app).post('/users')
+    const res = await request(app).post(MAIN_ROUTE)
         .send({ name: 'Walter Mitty', mail: `${Date.now()}@mail.com`, passwd: '123456' })
         .set('authorization', `bearer ${user.token}`)
     expect(res.status).toBe(201);
@@ -45,7 +47,7 @@ test('deve armazenar uma senha criptografada', async () => {
 })
 
 test('Nao deve inserir usuario sem nome', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({ mail: '111@gmail.com', passwd: '123456' })
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
@@ -55,7 +57,7 @@ test('Nao deve inserir usuario sem nome', () => {
 })
 
 test('nao deve inserir usuario sem email', async () => {
-    const result = await request(app).post('/users')
+    const result = await request(app).post(MAIN_ROUTE)
         .send({ name: 'Walter Mitty', passwd: '123456' })
         .set('authorization', `bearer ${user.token}`)
 
@@ -64,7 +66,7 @@ test('nao deve inserir usuario sem email', async () => {
 })
 
 test('Nao deve inserir usuairio sem senha', (done) => {
-    request(app).post('/users')
+    request(app).post(MAIN_ROUTE)
         .send({ name: 'Walter Mitty', mail: '123456@gmail.com' })
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
@@ -75,7 +77,7 @@ test('Nao deve inserir usuairio sem senha', (done) => {
 })
 
 test('Nao deve inserir usuario com email existente', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({ name: 'Walter Mitty', mail, passwd: '123456' })
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {

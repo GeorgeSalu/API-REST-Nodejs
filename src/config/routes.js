@@ -1,4 +1,4 @@
-module.exports = (app) => {
+/*module.exports = (app) => {
     app.route('/auth/signin')
         .post(app.routes.auth.signin);
 
@@ -21,4 +21,4 @@ module.exports = (app) => {
         .get(app.routes.accounts.get)
         .put(app.routes.accounts.update)
         .delete(app.routes.accounts.remove)
-}
+}*/
