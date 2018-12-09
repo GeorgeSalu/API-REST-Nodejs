@@ -34,8 +34,17 @@ test('nao deve inserir uma conta sem nome', () => {
         })
 })
 
-test.skip('nao deve inserir uma conta de nome duplicado', () => {
-
+test('nao deve inserir uma conta de nome duplicado', () => {
+    return app.db('accounts').insert({ name: 'Acc duplicada', user_id: user.id })
+        .then(() => {
+            request(app).post(MAIN_ROUTE)
+                .set('authorization', `bearer ${user.token}`)
+                .send({ name: 'Acc duplicada' })
+                .then((res) => {
+                    expect(res.status).toBe(400);
+                    expect(res.body.error).toBe('ja existe uma conta com este nome')
+                })
+        })
 })
 
 test('deve listar apenas as contas do usuario', () => {
