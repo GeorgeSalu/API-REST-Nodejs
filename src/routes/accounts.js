@@ -5,7 +5,7 @@ module.exports = (app) => {
     const router = express.Router();
 
     router.post('', (req, res, next) => {
-        app.services.account.save(req.body)
+        app.services.account.save({ ...req.body, user_id: req.user.id })
             .then((result) => {
 
                 return res.status(201).json(result[0])
