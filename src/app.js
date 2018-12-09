@@ -9,7 +9,8 @@ app.db = knex(knexfile.test)
 app.use(knexLogger(app.db));
 
 consign({ cwd: 'src', verbose: false })
-    .include('./config/middleware.js')
+    .include('./config/passport.js')
+    .then('./config/middleware.js')
     .then('./services')
     .then('./routes')
     .then('./config/routes.js')
