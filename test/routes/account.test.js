@@ -95,8 +95,18 @@ test('deve alterar uma conta', () => {
         })
 })
 
-test.skip('nao deve alterar um conta de outro usuario', () => {
-
+test('nao deve alterar um conta de outro usuario', () => {
+    return app.db('accounts')
+        .insert({ name: 'Acc User #2', user_id: user2.id }, ['id'])
+        .then(acc => {
+            request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+                .send({ name: 'Acc Update' })
+                .set('authorization', `bearer ${user.token}`)
+                .then((res) => {
+                    expect(res.status).toBe(403);
+                    expect(res.body.error).toBe('este recurso nao pertence ao usuario');
+                })
+        })
 })
 
 test('deve remover uma conta', () => {
@@ -108,6 +118,15 @@ test('deve remover uma conta', () => {
         })
 })
 
-test.skip('nao deve remover um conta de outro usuario', () => {
-
+test('nao deve remover um conta de outro usuario', () => {
+    return app.db('accounts')
+        .insert({ name: 'Acc User #2', user_id: user2.id }, ['id'])
+        .then(acc => {
+            request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+                .set('authorization', `bearer ${user.token}`)
+                .then((res) => {
+                    expect(res.status).toBe(403);
+                    expect(res.body.error).toBe('este recurso nao pertence ao usuario');
+                })
+        })
 })
