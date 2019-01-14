@@ -39,3 +39,13 @@ test('deve listar apenas as transacoes do usuario', () => {
             expect(res.body[0].name).toBe('Acc #1')
         }))
 })
+
+test('deve funcionar com snippets', () => {
+    return request(app).get(MAIN_ROUTE)
+        .set('authorization', `bearer ${user.token}`)
+        .then((res) => {
+            expect(res.status).toBe(200)
+            console.log(res.body)
+            expect(res.body[0].name).toBe('Acc #1')
+        })
+})
