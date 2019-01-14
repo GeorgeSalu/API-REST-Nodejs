@@ -51,7 +51,7 @@ test('deve funcionar com snippets', () => {
 test('deve inserir uma transação com sucesso', () => {
     return request(app).post(MAIN_ROUTE)
         .set('authorization', `bearer ${user.token}`)
-        .send({ description: 'New T', date: Date(), ammount: 100, type: 'I', acc_id: accUser.id })
+        .send({ description: 'T1', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id })
         .then((res) => {
             expect(res.status).toBe(201)
             expect(res.body.acc_id).toBe(accUser.id)
