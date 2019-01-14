@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../../src/app');
+const jwt = require('jwt-simple');
 
+const MAIN_ROUTE = '/v1/transactions';
 let user;
 let user2;
 let accUser;
@@ -16,6 +18,7 @@ beforeAll(async () => {
     ], '*');
     [user, user2] = users;
     delete user.passwd;
+    user.token = jwt.encode(user, 'Segredo');
     const accs = await app.db('accounts').insert([
         { name: 'Acc #1', user_id: user.id },
         { name: 'Acc #2', user_id: user2.id }
@@ -25,7 +28,14 @@ beforeAll(async () => {
 
 test('deve listar apenas as transacoes do usuario', () => {
     return app.db('transactions').insert([
-        { description: 'T1', data: new Date(), ammount: 100, acc_id: accUser.id },
-        { description: 'T2', data: new Date(), ammount: 300, acc_id: accUser2.id }
-    ])
+        { description: 'T1', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id },
+        { description: 'T2', date: new Date(), ammount: 300, type: 'O', acc_id: accUser2.id }
+    ]).then(() => request(app).get(MAIN_ROUTE)
+        .set('authorization', `bearer ${user.token}`)
+        .then((res) => {
+            expect(res.status).toBe(200)
+            expect(res.body).toHaveLength(1);
+            console.log(res.body)
+            expect(res.body[0].name).toBe('Acc #1')
+        }))
 })
