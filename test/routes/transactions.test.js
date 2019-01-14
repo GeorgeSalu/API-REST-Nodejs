@@ -35,7 +35,6 @@ test('deve listar apenas as transacoes do usuario', () => {
         .then((res) => {
             expect(res.status).toBe(200)
             expect(res.body).toHaveLength(1);
-            console.log(res.body)
             expect(res.body[0].description).toBe('T1')
         }))
 })
@@ -45,7 +44,6 @@ test('deve funcionar com snippets', () => {
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
             expect(res.status).toBe(200)
-            console.log(res.body)
             expect(res.body[0].description).toBe('T1')
         })
 })
