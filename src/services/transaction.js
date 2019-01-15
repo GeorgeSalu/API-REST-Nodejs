@@ -8,10 +8,14 @@ module.exports = (app) => {
             .select();
     };
 
+    const findOne = (filter) => {
+        return app.db('transactions').where(filter).first();
+    }
+
     const save = (transactions) => {
         return app.db('transactions')
             .insert(transactions, '*');
     };
 
-    return { find, save }
+    return { find, save, findOne }
 }
