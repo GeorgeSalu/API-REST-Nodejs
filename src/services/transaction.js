@@ -33,7 +33,8 @@ module.exports = (app) => {
             .update(transaction, '*')
     }
 
-    const remove = (id) => {
+    const remove = async (id) => {
+
         return app.db('transactions')
             .where({ id })
             .del();

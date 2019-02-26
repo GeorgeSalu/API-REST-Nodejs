@@ -179,3 +179,15 @@ test('nao deve remover uma transação de outro usuario', () => {
         })
     )
 })
+
+test('nao deve remover conta com transacao', () => {
+    return app.db('transactions').insert(
+        { description: 'to delete', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id }, ['id'],
+    ).then(() => request(app).delete(`/v1/accounts/${accUser.id}`)
+        .set('authorization', `bearer ${user.token}`)
+        .then((res) => {
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('esta conta possui transacoes associadas');
+        })
+    )
+})
