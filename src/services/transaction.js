@@ -12,9 +12,14 @@ module.exports = (app) => {
         return app.db('transactions').where(filter).first();
     }
 
-    const save = (transactions) => {
+    const save = (transaction) => {
+        if ((transaction.type === 'I' && transaction.ammount < 0)
+            || (transaction.type === 'O' && transaction.ammount > 0)) {
+            transaction.ammount *= -1;
+        }
+
         return app.db('transactions')
-            .insert(transactions, '*');
+            .insert(transaction, '*');
     };
 
     const update = (id, transaction) => {
@@ -25,7 +30,7 @@ module.exports = (app) => {
 
     const remove = (id) => {
         return app.db('transactions')
-            .where({id})
+            .where({ id })
             .del();
     }
 
