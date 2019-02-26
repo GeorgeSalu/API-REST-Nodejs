@@ -81,41 +81,56 @@ test('transacoes de saida deve ser negativas', () => {
         })
 })
 
-test('nao deve inserir uma transacao sem descricao', () => {
-    return request(app).post(MAIN_ROUTE)
-        .set('authorization', `bearer ${user.token}`)
-        .send({ date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id })
-        .then((res) => {
-            expect(res.status).toBe(400);
-            expect(res.body.error).toBe('Descricao e um atributo obrigatorio');
-        })
+describe('ao tentar inserir uma transacao invalida', () => {
+
+    //const validTransaction = { description: 'T1', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id };
+    let validTransaction;
+
+    beforeAll(() => {
+        validTransaction = { description: 'T1', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id };
+    })
+
+    const testTemplate = (newData, erroMessage) => {
+        return request(app).post(MAIN_ROUTE)
+            .set('authorization', `bearer ${user.token}`)
+            .send({ ...validTransaction, ...newData })
+            .then((res) => {
+                expect(res.status).toBe(400);
+                expect(res.body.error).toBe(erroMessage);
+            })
+    }
+
+    test('nao deve inserir uma transacao sem descricao', () => testTemplate({ description: null }, 'Descricao e um atributo obrigatorio'))
+
+    test('nao deve inserir uma transacao sem valor', () => testTemplate({ ammount: null }, 'Valor e um atributo obrigatorio'))
+
+    test('nao deve inserir uma transacao sem valor', () => {
+        return request(app).post(MAIN_ROUTE)
+            .set('authorization', `bearer ${user.token}`)
+            .send({ description: 'T1', date: new Date(), type: 'I', acc_id: accUser.id })
+            .then((res) => {
+                expect(res.status).toBe(400);
+                expect(res.body.error).toBe('Valor e um atributo obrigatorio');
+            })
+    })
+
+    test.skip('nao deve inserir uma transacao sem data', () => {
+
+    })
+
+    test.skip('nao deve inserir uma transacao sem conta', () => {
+
+    })
+
+    test.skip('nao deve inserir uma transacao sem tipo', () => {
+
+    })
+
+    test.skip('nao deve inserir uma transacao com tipo invalido', () => {
+
+    })
 })
 
-test('nao deve inserir uma transacao sem valor', () => {
-    return request(app).post(MAIN_ROUTE)
-        .set('authorization', `bearer ${user.token}`)
-        .send({ description: 'T1', date: new Date(), type: 'I', acc_id: accUser.id })
-        .then((res) => {
-            expect(res.status).toBe(400);
-            expect(res.body.error).toBe('Valor e um atributo obrigatorio');
-        })
-})
-
-test.skip('nao deve inserir uma transacao sem data', () => {
-
-})
-
-test.skip('nao deve inserir uma transacao sem conta', () => {
-
-})
-
-test.skip('nao deve inserir uma transacao sem tipo', () => {
-
-})
-
-test.skip('nao deve inserir uma transacao com tipo invalido', () => {
-
-})
 
 test('deve retornar uma transacao por id', () => {
     return app.db('transactions').insert(
