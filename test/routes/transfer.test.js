@@ -40,3 +40,30 @@ test('deve inserir uma transferencia com sucesso', () => {
             expect(transactions[1].acc_id).toBe(10000);
         })
 })
+
+describe('ao salvar um transaferencia valida...', () => {
+    let transferId;
+    test('deve restornar o status 201 e os dados da transaferencia', () => {
+        return request(app).post(MAIN_ROUTE)
+            .set('authorization', `bearer ${TOKEN}`)
+            .send({ description: 'regular transfer', user_id: 10000, acc_ori_id: 10000, acc_dest_id: 10001, ammount: 100, date: new Date() })
+            .then(async (res) => {
+                expect(res.status).toBe(201);
+                expect(res.body.description).toBe('regular transfer');
+
+                transferId = res.body.id;
+            });
+    })
+
+    test('as transacoes equivalentes devem ter sito geradas', async () => {
+        const transactions = await app.db('transactions').where({ transfer_id: res.body.id }).orderBy('ammount');
+
+        expect(transactions).toHaveLength(2);
+
+        [outcome, income] = transactions;
+    })
+
+    test('a transacao de saida deve ser negativa', () => {
+
+    })
+})
