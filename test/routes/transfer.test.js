@@ -73,3 +73,46 @@ describe('ao salvar um transaferencia valida...', () => {
     })
 
 })
+
+describe('ao tentar salvar uma transferencia invalida...', () => {
+
+    const validTransfer = { description: 'regular transfer', user_id: 10000, acc_ori_id: 10000, acc_dest_id: 10001, ammount: 100, date: new Date() };
+
+    const template = (newData, erroMessage) => {
+        return request(app).post(MAIN_ROUTE)
+            .set('authorization', `bearer ${TOKEN}`)
+            .send({ ...validTransfer, ...newData })
+            .then((res) => {
+                expect(res.status).toBe(400);
+                expect(res.body.error).toBe(erroMessage);
+            })
+    }
+
+    test('nao deve inserir sem descricao', () => {
+        template({ description: null }, 'descricao é um atributo obrigatorio')
+    })
+
+    test('nao deve inserir sem valor', () => {
+        template({ ammount: null }, 'valor é um atributo obrigatorio')
+    })
+
+    test('nao deve inserir sem data', () => {
+        template({ date: null }, 'Data é um atributo obrigatorio')
+    })
+
+    test('nao deve inserir sem conta de origem', () => {
+        template({ acc_ori_id: null }, 'conta de origem é um atributo obrigatorio')
+    })
+
+    test('nao deve inserir sem conta de destino', () => {
+        template({ acc_dest_id: null }, 'conta de destino é um atributo obrigatorio')
+    })
+
+    test('nao deve inserir sem as contas de origem forem as mesmas', () => {
+        template({ acc_dest_id: 10000 }, 'nao é possivel transaferir de uma conta para ela mesma')
+    })
+
+    test('nao deve inserir sem as contas pertencerem a outro usuario', () => {
+        template({ acc_ori_id: 10002 }, 'conta de numero 10002 nao pertence ao usuario')
+    })
+})
