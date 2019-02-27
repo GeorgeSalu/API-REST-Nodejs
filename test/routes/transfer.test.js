@@ -16,7 +16,6 @@ test('deve listar apenas as transferencias do usuario', () => {
     return request(app).get(MAIN_ROUTE)
         .set('authorization', `bearer ${TOKEN}`)
         .then((res) => {
-            console.log(res.body)
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
             expect(res.body[0].description).toBe('transfer #1');
