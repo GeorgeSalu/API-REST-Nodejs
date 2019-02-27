@@ -1,3 +1,5 @@
+const ValidationError = require('../errors/ValidationErros');
+
 module.exports = (app) => {
     const find = (filter = {}) => {
         return app.db('transfers')
@@ -6,6 +8,9 @@ module.exports = (app) => {
     };
 
     const save = async (transfer) => {
+
+        if (!transfer.description) throw new ValidationError('descricao é um atributo obrigatorio');
+
         const result = await app.db('transfers').insert(transfer, '*');
         const transferId = result[0].id;
 
