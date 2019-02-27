@@ -115,4 +115,5 @@ describe('ao tentar salvar uma transferencia invalida...', () => {
     test('nao deve inserir sem as contas pertencerem a outro usuario', () => {
         template({ acc_ori_id: 10002 }, 'conta de numero 10002 nao pertence ao usuario')
     })
-})
+});
+

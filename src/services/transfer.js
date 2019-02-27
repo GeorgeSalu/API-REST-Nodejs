@@ -7,6 +7,12 @@ module.exports = (app) => {
             .select();
     };
 
+    const findOne = (filter = {}) => {
+        return app.db('transfers')
+            .where(filter)
+            .first();
+    };
+
     const save = async (transfer) => {
 
         if (!transfer.description) throw new ValidationError('descricao é um atributo obrigatorio');
@@ -23,5 +29,5 @@ module.exports = (app) => {
         return result;
     }
 
-    return { find, save };
+    return { find, save, findOne };
 }
